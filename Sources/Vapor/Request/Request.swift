@@ -170,7 +170,7 @@ public final class Request: ContainerAlias, DatabaseConnectable, HTTPMessageCont
             return eventLoop.newFailedFuture(error: error)
         }
         hasActiveConnections = true
-        return privateContainer.requestCachedConnection(to: database, poolContainer: self)
+        return sharedContainer.requestCachedConnection(to: database, poolContainer: self)
     }
 
     // MARK: Request Codable
@@ -188,7 +188,7 @@ public final class Request: ContainerAlias, DatabaseConnectable, HTTPMessageCont
     /// Called when the `Request` deinitializes.
     deinit {
         if hasActiveConnections {
-            try! privateContainer.releaseCachedConnections()
+            try! sharedContainer.releaseCachedConnections()
         }
     }
 }
